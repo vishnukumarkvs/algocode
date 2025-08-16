@@ -20,7 +20,6 @@ func getLinesChannel(f io.ReadCloser) <-chan string {
 			data := make([]byte, 8)
 			n, err := f.Read(data)
 			if err != nil {
-				log.Println("File ended !!")
 				break
 			}
 
@@ -71,3 +70,32 @@ func main() {
 // 3. <-chan string : is a receive only channel of strings. You create a seperate fucntion with channels and goroutines and send each line to out channel
 // 4. Now instead of reading from a file , we read from a tcp connection
 // 5. To test this connection, run the program and in seperate pain, run `nc -v localhost 42069`. nc - netcat command to work with tcp connections
+// 6. U can also send a curl request. For example: curl http://localhost:42069/coffee
+//
+// GET /coffee HTTP/1.1
+// Host: localhost:42069
+// User-Agent: curl/8.7.1
+// Accept: */*
+//
+// 7. We get the plain request as output
+
+// 8. curl -X POST -H "Content-Type: application/json" -d '{"flavor":"dark mode 2"}' http://localhost:42069/coffee
+//
+// POST /coffee HTTP/1.1
+// Host: localhost:42069
+// User-Agent: curl/8.7.1
+// Accept: */*
+// Content-Type: application/json
+// Content-Length: 24
+
+// {"flavor":"dark mode 2"}
+
+// In POST, we get content-length field naem also
+// In RFC, its called field-name. These are basically http headers
+
+// Basic code
+
+// start-line CRLF
+// \*( field-line CRLF )
+// CRLF
+// [ message-body ]
