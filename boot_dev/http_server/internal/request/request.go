@@ -7,8 +7,10 @@ import (
 	"strings"
 )
 
+type parseState string
 type Request struct {
 	RequestLine RequestLine
+	state       parseState
 }
 
 type RequestLine struct {
@@ -18,6 +20,17 @@ type RequestLine struct {
 }
 
 var BAD_START_LINE = fmt.Errorf("Request Line is bad")
+
+const (
+	StateInit parseState = "init"
+	StateDone parseState = "done"
+)
+
+func newRequest() *Request {
+	return &Request{
+		state: StateInit,
+	}
+}
 
 func parseRequestLine(requestLine string) (*RequestLine, error) {
 	re := regexp.MustCompile(`\s+`)
@@ -46,7 +59,21 @@ func parseRequestLine(requestLine string) (*RequestLine, error) {
 }
 
 func RequestFromReader(reader io.Reader) (*Request, error) {
-	data, err := io.ReadAll(reader)
+	// data, err := io.ReadAll(reader) // ideally its a stredam and readall doesnt work everytime
+
+	request := newRequest()
+
+	buf := make([]byte, 1024)
+	bufIdx := 0
+	for {
+		n, err := reader.Read(buf[bufIdx:])
+		if err != nil {
+			return nil, err
+		}
+
+		request.parse(buf)
+	}
+
 	if err != nil {
 		return nil, err
 	}
