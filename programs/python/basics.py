@@ -47,6 +47,52 @@ def num_possible_orders(num_posts):
     return p
 
 
+# Big O
+# O(1) < O(log(n)) < O(n) < O(n**2) < O(n**3) < O(2**n) < O(n!)
+
+def find_max(nums):
+    maxx = -float("inf")
+    for num in nums:
+        if maxx > num:
+            maxx = num
+    return maxx
+
+# O(n**2)
+def does_name_exist(first_names,  last_names , full_name):
+    for fname in first_names:
+        for lname in last_names:
+            if f'{fname} {lname}' == full_name:
+                return True
+    return False
+
+# O(nm)
+def get_avg_brand_followers(all_handles, brand_name):
+    cnt = 0
+    for l1 in all_handles:
+        for l2 in l1:
+            if "cosmo" in l2:
+                cnt++
+    lists = len(all_handles)
+
+    return cnt/lists
+
+# O(1) -> fetching an item in dictionary (or array)
+
+
+# O(log(n)) - Binary search - nums needs to be sorted
+def binary_search(nums, val):
+    low, high = 0, len(nums)-1
+
+    while low <= high:
+        mid = (low + high) // 2
+        if val == nums[mid]:
+            return mid
+        elif val > nums[mid]:
+            low = mid + 1
+        else:
+            high = mid -1
+    return -1
+
 if __name__ == "__main__":
     print(find_minimum([1,2,3]))
     print(find_minimum([]))
