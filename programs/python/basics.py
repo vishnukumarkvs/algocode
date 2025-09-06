@@ -131,6 +131,7 @@ def insertion_sort(nums):
     print(nums)
 
 # Divide and cxonquer algorithdm . Best, Avg, Worst case is O(nlog(n))
+# Other algos have O(1) space but this is high memory usage. Due to recursion calls
 def merge_sort(nums):
 
     # base case
@@ -164,6 +165,30 @@ def merge(left, right):
         j += 1
     return result
 
+# Tim sort : python default sorting algorithm. combination of merge sort and insertion sort
+
+
+# quick sort: used in many production systems
+# same big o as merge sort, not much memory, will do inplace
+# this is optimized in prod as this can go O(n**2) in worst case scenario
+# divide and conquer
+def quick_sort(nums, low, high):
+    if low < high:
+        p = partition(nums,low,high)
+        quick_sort(nums,low,p-1)
+        quick_sort(nums,p+1,high)
+    print("qs",nums)
+    
+def partition(nums,low,high):
+    pivot = nums[high] # last element
+    i = low
+
+    for j in range(low,high):
+        if nums[j] < pivot:
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+    nums[i], nums[high] = nums[high], nums[i]
+    return i
 
 if __name__ == "__main__":
     print(find_minimum([1,2,3]))
@@ -179,4 +204,4 @@ if __name__ == "__main__":
     print(sorted([6,3,7,1]))
     print(insertion_sort([2,1,7,6]))
     print(merge_sort([3,6,2,55,11,2,77,89,32]))
-
+    print(quick_sort([3,6,2,55,11,2,77,89,32],0,8))
