@@ -190,6 +190,53 @@ def partition(nums,low,high):
     nums[i], nums[high] = nums[high], nums[i]
     return i
 
+
+# Exponenetial
+
+# Fibonacci
+def fib_recursive(n):
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    return fib_recursive(n-1) + fib_recursive(n-2)
+
+def fib_mem(n, memo):
+    if n <=1:
+        return n
+    if memo[n] != -1:
+        return memo[n]
+
+    memo[n] = fib_mem(n-1,memo) + fib_mem(n-2,memo)
+    return memo[n]
+
+def fib_dp(n):
+    if n<=1:
+        return n
+    dp = [0] * (n+1)
+
+    dp[0] = 0
+    dp[1] = 1
+
+    for i in range(2,n+1):
+        dp[i] = dp[i-1] + dp[i-2]
+
+    return dp[n]
+
+# Powerset - Exponential - 2**n
+def power_set(nums):
+    if len(nums) == 0:
+        return [[]]
+
+    subsets = []
+    first = nums[0]
+    remaining = nums[1:]
+    remaining_subsets = power_set(remaining)
+    for subset in remaining_subsets:
+        subsets.append([first] + subset)
+        subsets.append(subset)
+    return subsets  
+
 if __name__ == "__main__":
     print(find_minimum([1,2,3]))
     print(find_minimum([]))
